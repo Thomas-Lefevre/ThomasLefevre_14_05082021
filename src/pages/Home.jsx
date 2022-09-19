@@ -1,21 +1,22 @@
 import Input from "../components/Input";
-import { Link } from 'react-router-dom';
+import Header from "../components/Header";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { employeesDatas } from "../datas";
+import { useDispatch, useSelector } from "react-redux";
 import { states } from "../states"
-import { submitForm, validForm, unvalidForm } from "../redux/actions"
+import { submitForm, validForm, unvalidForm, checkValid } from "../redux/actions"
 import ReactModal from "react-modal";
+import closeIcon from "../assets/closeIcon.png"
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { Dropdown } from "thomas_lefevre_plugin_dropdown";
+import { selectEmployees } from "../redux/selector"
 
 ReactModal.setAppElement('#root');
 
 function Home() {
 
-  localStorage.setItem('Array of employees', JSON.stringify(employeesDatas))
-  const [firstName, setFirstName] = useState('ze')
-  const [lastName, setLastName] = useState('testNom')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [birthDate, setBirthDate] = useState(new Date())
   const [startDate, setStartDate] = useState(new Date())
   const [street, setStreet] = useState('')
@@ -28,7 +29,6 @@ function Home() {
   const [isValidZip, setIsValidZip] = useState(true)
   const [formIsValid, setFormIsValid] = useState(true)
   const [isOpen, setIsOpen] = useState(false)
-  const [resetDrop, setResetDrop] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -40,16 +40,18 @@ function Home() {
     return [month, day, year].join("/")
   }
 
+  const getCountEmployees = useSelector(selectEmployees).data.length
+
   const newEmployee = {
-    'id': employeesDatas.length,
-    'firstname': firstName,
-    'lastname': lastName,
-    'dateBirth': formatDate(birthDate),
+    'id': getCountEmployees + 1,
+    'firstName': firstName,
+    'lastName': lastName,
+    'birthDate': formatDate(birthDate),
     'startDate': formatDate(startDate),
     'street': street,
     'city': city,
     'state': state,
-    'zip Code': zipCode,
+    'zipCode': zipCode,
     'department': department,
   }
 
@@ -59,9 +61,6 @@ function Home() {
   function checkForm() {
     setIsValidFirstName(true)
     setIsValidLastName(true)
-
-    console.log(firstName);
-    console.log(lastName);
 
     if (firstName === '') {
       setIsValidFirstName(false)
@@ -79,60 +78,39 @@ function Home() {
     }
   }
 
-  function storeNewData() {
-
-    if (localStorage.getItem('Array of employees') === null) {
-      localStorage.setItem('Array of employees', [])
-    }
-
-    const dataReceived = JSON.parse(localStorage.getItem('Array of employees'))
-    dataReceived.push(newEmployee)
-    localStorage.setItem('Array of employees', JSON.stringify(dataReceived))
-    setIsOpen(true)
-  }
-
   function validateForm(e) {
     e.preventDefault()
     checkForm()
-    const submission = dispatch(submitForm(newEmployee))
+    const submission = dispatch(checkValid())
 
     if (submission) {
-      storeNewData()
+      dispatch(submitForm(newEmployee))
       setFormIsValid(true)
       setBirthDate(new Date())
       setStartDate(new Date())
-      setResetDrop(true)
+      setIsOpen(true)
     }
     else {
       setFormIsValid(false)
     }
   }
 
-  function resetForm() {
-    setResetDrop(false)
-    document.getElementById("form").reset()
-  }
-
-  function openModal() {
-    setIsOpen(true);
-  }
   function closeModal() {
     setIsOpen(false);
   }
 
+  function openModal() {
+    setIsOpen(true)
+  }
   return (
     <div>
-      <div className="title">
-        <h1>HRnet</h1>
-        <button onClick={openModal}>test modal</button>
-      </div>
-      <div className="container">
-        <Link to='/employeeList'>View Current Employees</Link>
+      <Header />
+      <div className="homeContainer">
+        <h1 className="title">HRnet</h1>
         <h2>Create Employee</h2>
-        <form id="create-employee" onSubmit={validateForm}>
-
-          <Input label="First Name" labelFor="first-name" inputType="text" inputId="first-name" change={console.log("test")} />
-          <Input label="Last Name" labelFor="last-name" inputType="text" inputId="last-name" onChange={e => setLastName(e.target.value)} />
+        <form id="create-employee" className="form" onSubmit={validateForm}>
+          <Input label="First Name" labelFor="first-name" inputType="text" inputId="first-name" setValue={e => setFirstName(e.target.value)} />
+          <Input label="Last Name" labelFor="last-name" inputType="text" inputId="last-name" setValue={e => setLastName(e.target.value)} />
           <div>
             <label htmlFor={"date-of-birth"}>Date of Birth</label>
             <DatePicker selected={birthDate} onChange={setBirthDate} value={birthDate} />
@@ -142,36 +120,32 @@ function Home() {
             <DatePicker selected={startDate} onChange={setStartDate} value={startDate} />
           </div>
 
-          <fieldset className="address">
+          <fieldset className="form__address">
             <legend>Address</legend>
 
-            <Input label="Street" labelFor="street" inputType="text" inputId="street" onChange={e => setStreet(e.target.value)} />
-            <Input label="City" labelFor="city" inputType="text" inputId="city" onChange={e => setCity(e.target.value)} />
+            <Input label="Street" labelFor="street" inputType="text" inputId="street" setValue={e => setStreet(e.target.value)} />
+            <Input label="City" labelFor="city" inputType="text" inputId="city" setValue={e => setCity(e.target.value)} />
 
             <label htmlFor="state">State</label>
-            <select name="state" id="state"></select>
+            <Dropdown list={statesNames} setValue={setState} />
 
-            <Input label="Zip Code" labelFor="zip-code" inputType="number" inputId="zip-code" />
+            <Input label="Zip Code" labelFor="zip-code" inputType="number" inputId="zip-code" setValue={e => setZipCode(e.target.value)} />
           </fieldset>
           <label htmlFor="department">Department</label>
-          <select name="department" id="department">
-            <option>Sales</option>
-            <option>Marketing</option>
-            <option>Engineering</option>
-            <option>Human Resources</option>
-            <option>Legal</option>
-          </select>
-          <button>Save</button>
+          <Dropdown list={['Sales', 'Marketing', 'Engineering', 'Human Ressources', 'Legal']} setValue={setDepartment} />
+          <button className="form__save">Save</button>
         </form>
       </div>
       <ReactModal
         isOpen={isOpen}
         contentLabel="Employee Created!"
-        onRequestClose={resetForm}>
+        className="modal"
+        onRequestClose={closeModal}
+        shouldCloseOnOverlayClick={true}>
         <div>Employee Created!</div>
-        <button onClick={closeModal}>close</button>
+        {/* <img onClick={closeModal} className="modal__icon" src={closeIcon} alt="quit modal" /> */}
       </ReactModal>
-      <div id="confirmation" className="modal"></div>
+      {/* <button onClick={openModal}>aze</button> */}
     </div>
   );
 }

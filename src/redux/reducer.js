@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { employeesDatas } from '../datas'
 
 const initialState = {
-    data: null,
+    data: employeesDatas,
     formIsValid: false
 }
 
@@ -10,10 +11,9 @@ const { actions, reducer } = createSlice({
     initialState,
     reducers: {
         submit: {
-            prepare: (data, id) => ({ payload: { data, id } }),
+            prepare: (data) => ({ payload: { data } }),
             reducer: (draft, action) => {
-                draft.data = action.payload.data
-                draft.data.id = action.payload.id
+                draft.data = action.payload
             }
         },
         valid: {
@@ -22,7 +22,12 @@ const { actions, reducer } = createSlice({
         unvalid: {
             reducer: (draft, action) => { draft.formIsValid = false }
         },
-
+        addEmployee: {
+            prepare: (data, currentEmployees) => ({ payload: { data, currentEmployees } }),
+            reducer: (draft, action) => {
+                draft.data = [...action.payload.currentEmployees, action.payload.data]
+            }
+        }
     }
 })
 

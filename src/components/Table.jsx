@@ -1,12 +1,10 @@
 import { DataGrid, GridToolbarQuickFilter, GridToolbarContainer } from '@mui/x-data-grid';
 
-function Table() {
-
-    const datas = JSON.parse(localStorage.getItem('Array of employees'))
+function Table({ datas }) {
 
     const columns = [
-        { field: 'firstName', headerName: 'First name', width: 130 },
-        { field: 'lastName', headerName: 'Last name', width: 130 },
+        { field: 'firstName', headerName: 'First name' },
+        { field: 'lastName', headerName: 'Last name' },
         { field: 'startDate', headerName: 'Start Date' },
         { field: 'department', headerName: 'Department' },
         { field: 'birthDate', headerName: 'Date of birth' },
@@ -24,12 +22,14 @@ function Table() {
         )
     }
     return (
-        <div style={{ height: 400, width: '100%' }}>
-            <DataGrid
-                rows={datas}
-                columns={columns}
-                components={{ Toolbar: CustomToolbar }}
-            />
+        <div style={{ height: "600px", display: "flex" }}>
+            <div style={{ flexGrow: 1 }}>
+                <DataGrid
+                    rows={datas}
+                    columns={columns}
+                    components={{ Toolbar: CustomToolbar }}
+                />
+            </div>
         </div>)
 }
 export default Table

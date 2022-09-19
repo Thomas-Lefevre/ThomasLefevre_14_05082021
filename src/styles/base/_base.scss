@@ -1,0 +1,22 @@
+body {
+    margin: 0;
+    padding: 0;
+    width: 80%;
+    margin: auto;
+}
+
+a{
+    text-decoration: none;
+}
+
+input{
+    border-color: $lightGreen;
+    border-radius: 5px;
+    width: 190px;
+}
+
+label {
+    display: block;
+    margin-top: 1rem;
+    margin-bottom: 10px;
+  }

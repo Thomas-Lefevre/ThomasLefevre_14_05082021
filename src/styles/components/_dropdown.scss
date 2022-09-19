@@ -1,0 +1,14 @@
+.dropDown {
+    width: 150px;
+    border-color: $lightGreen;
+}
+
+.listElement {
+    margin-top: 5px;
+    padding:5px 5px 5px 0;
+}
+
+.listElement:hover {
+    background-color: $green;
+    border-radius: 5px;
+}

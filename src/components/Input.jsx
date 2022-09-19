@@ -1,11 +1,11 @@
-function Input({ labelFor, label, inputType, inputId, change }) {
+function Input({ labelFor, label, inputType, inputId, setValue }) {
     
 
     return (
 
         <div>
             <label htmlFor={labelFor}>{label}</label>
-            <input onChange={change} type={inputType} id={inputId} />
+            <input onChange={setValue} type={inputType} id={inputId} />
         </div>
     )
 }

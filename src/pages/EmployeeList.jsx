@@ -1,16 +1,25 @@
-import { Link } from 'react-router-dom'
 import Table from '../components/Table';
+import Header from '../components/Header';
+import { useSelector } from 'react-redux'
+import { selectEmployees } from '../redux/selector';
 
 function EmployeeList() {
-    const testlocalstoragedata = localStorage.getItem('Array of employees');
-    console.log(testlocalstoragedata);
 
+    const getDatas = useSelector(selectEmployees).data
+
+    const datas = getDatas.map(el => ({ ...el }))
+
+    console.log(getDatas);
+    console.log(datas);
     return (
-        <div id="employee-div" className="container">
-            <h1>Current Employees</h1>
-            <Table />
-            <Link to='/'>Home</Link>
-        </div>);
+        <div>
+            <Header />
+            <div id="employee-div" className="employeeListContainer">
+                <h1 className='employeeListContainer__title'>Current Employees</h1>
+                <Table datas={datas} />
+            </div>
+        </div>
+    );
 }
 
 export default EmployeeList;
