@@ -3,15 +3,15 @@ import { DataGrid, GridToolbarQuickFilter, GridToolbarContainer } from '@mui/x-d
 function Table({ datas }) {
 
     const columns = [
-        { field: 'firstName', headerName: 'First name' },
-        { field: 'lastName', headerName: 'Last name' },
-        { field: 'startDate', headerName: 'Start Date' },
-        { field: 'department', headerName: 'Department' },
-        { field: 'birthDate', headerName: 'Date of birth' },
-        { field: 'street', headerName: 'Street' },
-        { field: 'city', headerName: 'City' },
-        { field: 'state', headerName: 'State' },
-        { field: 'zipCode', headerName: 'Zip Code' }
+        { field: 'firstName', headerName: 'First name', width:150 },
+        { field: 'lastName', headerName: 'Last name' , width:150 },
+        { field: 'startDate', headerName: 'Start Date' , width:150 },
+        { field: 'department', headerName: 'Department' , width:150 },
+        { field: 'birthDate', headerName: 'Date of birth' , width:150 },
+        { field: 'street', headerName: 'Street' , width:300 },
+        { field: 'city', headerName: 'City' , width:150 },
+        { field: 'state', headerName: 'State' , width:150 },
+        { field: 'zipCode', headerName: 'Zip Code' , width:150 }
     ];
 
     function CustomToolbar() {
