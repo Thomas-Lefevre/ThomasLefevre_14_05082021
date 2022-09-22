@@ -26,7 +26,6 @@ function Home() {
   const [department, setDepartment] = useState('')
   const [isValidFirstName, setIsValidFirstName] = useState(true)
   const [isValidLastName, setIsValidLastName] = useState(true)
-  const [isValidZip, setIsValidZip] = useState(true)
   const [formIsValid, setFormIsValid] = useState(true)
   const [isOpen, setIsOpen] = useState(false)
 
@@ -99,9 +98,6 @@ function Home() {
     setIsOpen(false);
   }
 
-  function openModal() {
-    setIsOpen(true)
-  }
   return (
     <div>
       <Header />
@@ -143,9 +139,8 @@ function Home() {
         onRequestClose={closeModal}
         shouldCloseOnOverlayClick={true}>
         <div>Employee Created!</div>
-        {/* <img onClick={closeModal} className="modal__icon" src={closeIcon} alt="quit modal" /> */}
+        <img onClick={closeModal} className="modal__icon" src={closeIcon} alt="quit modal" />
       </ReactModal>
-      {/* <button onClick={openModal}>aze</button> */}
     </div>
   );
 }

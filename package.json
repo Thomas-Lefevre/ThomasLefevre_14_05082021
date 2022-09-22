@@ -25,7 +25,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "sass": "sass --watch ./src/styles/main.scss:src/styles/style.css",
+    "sass": "sass --watch ./src/styles/main.scss:src/styles/style.css --style compressed",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

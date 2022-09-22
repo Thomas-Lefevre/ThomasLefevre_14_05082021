@@ -9,8 +9,6 @@ function EmployeeList() {
 
     const datas = getDatas.map(el => ({ ...el }))
 
-    console.log(getDatas);
-    console.log(datas);
     return (
         <div>
             <Header />
