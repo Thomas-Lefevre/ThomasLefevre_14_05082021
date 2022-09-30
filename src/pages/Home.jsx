@@ -9,7 +9,7 @@ import closeIcon from "../assets/closeIcon.png"
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Dropdown } from "thomas_lefevre_plugin_dropdown";
-import { selectEmployees } from "../redux/selector"
+import { selectEmployees } from "../redux/selector";
 
 ReactModal.setAppElement('#root');
 
